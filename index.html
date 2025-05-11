@@ -90,7 +90,7 @@ ${brief}
           model: "gpt-4o",
           stream: false,
           temperature: 0.8,
-          max_tokens: 1200
+          max_tokens: 800
         });
 
         console.log("🧠 Full response from Puter.js:", response);
@@ -108,7 +108,17 @@ ${brief}
         resultArea.textContent = content || "⚠️ No usable response returned.";
       } catch (e) {
         console.error("StratGenie error:", e);
-        resultArea.textContent = `❌ Error: ${e.message || e}`;
+
+        let errorMessage = "❌ Unknown error.";
+        if (e?.message) {
+          errorMessage = `❌ Error: ${e.message}`;
+        } else if (typeof e === "object") {
+          errorMessage = `❌ Error: ${JSON.stringify(e, null, 2)}`;
+        } else {
+          errorMessage = `❌ Error: ${e}`;
+        }
+
+        resultArea.textContent = errorMessage;
       }
     };
   </script>
