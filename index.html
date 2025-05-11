@@ -12,10 +12,16 @@
       margin: auto;
       background: #fafafa;
     }
+    h1 {
+      font-size: 2em;
+    }
     textarea {
       width: 100%;
       padding: 1em;
       font-size: 1em;
+      margin-top: 1em;
+      border: 1px solid #ccc;
+      border-radius: 4px;
     }
     button {
       margin-top: 1em;
@@ -24,7 +30,11 @@
       background-color: #333;
       color: #fff;
       border: none;
+      border-radius: 4px;
       cursor: pointer;
+    }
+    button:hover {
+      background-color: #444;
     }
     pre {
       background: #f4f4f4;
@@ -83,8 +93,19 @@ ${brief}
           max_tokens: 1200
         });
 
-        const content = response?.message?.content;
-        resultArea.textContent = content || "⚠️ No response returned.";
+        console.log("🧠 Full response from Puter.js:", response);
+
+        let content = "";
+
+        if (typeof response === "string") {
+          content = response;
+        } else if (response?.message?.content) {
+          content = response.message.content;
+        } else {
+          content = JSON.stringify(response, null, 2);
+        }
+
+        resultArea.textContent = content || "⚠️ No usable response returned.";
       } catch (e) {
         console.error("StratGenie error:", e);
         resultArea.textContent = `❌ Error: ${e.message || e}`;
